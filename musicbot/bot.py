@@ -1812,6 +1812,27 @@ class MusicBot(discord.Client):
         await self.disconnect_all_voice_clients()
         raise exceptions.TerminateSignal
 
+    async def cmd_remove(self, player, channel, leftover_args):
+        """
+        Usage:
+            {command_prefix}remove position
+
+        Remove a song from the playlist at the given position.
+        """
+        position = leftover_args[0]
+
+        if not isinstance(position, int)
+            raise exceptions.CommandError("Position parameter must be a number!", expire_in=20)
+
+        if len(player.playlist.entries) < position:
+            raise exceptions.CommandError("The position given is greater than the number of songs in the playlist!", expire_in=20)
+        
+        try:
+            player.playlist.remove_nth(position)
+        except Exception as e:
+            await self.send_message(channel, str(e))
+            return
+
     async def on_message(self, message):
         await self.wait_until_ready()
 
