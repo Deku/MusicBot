@@ -1821,7 +1821,7 @@ class MusicBot(discord.Client):
         """
         position = leftover_args[0]
 
-        if not isinstance(position, int)
+        if not isinstance(position, int):
             raise exceptions.CommandError("Position parameter must be a number!", expire_in=20)
 
         if len(player.playlist.entries) < position:
