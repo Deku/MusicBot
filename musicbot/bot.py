@@ -1819,10 +1819,13 @@ class MusicBot(discord.Client):
 
         Remove a song from the playlist at the given position.
         """
-        position = leftover_args[0]
-
-        if not isinstance(position, int):
+        try:
+            position = int(leftover_args[0])
+        except Exception as e:
             raise exceptions.CommandError("Position parameter must be a number!", expire_in=20)
+
+        if len(player.playlist.entries) == 0:
+            raise exceptions.CommandError("The playlist is empty!", expire_in=20)
 
         if len(player.playlist.entries) < position:
             raise exceptions.CommandError("The position given is greater than the number of songs in the playlist!", expire_in=20)
