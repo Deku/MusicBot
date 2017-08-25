@@ -1832,9 +1832,9 @@ class MusicBot(discord.Client):
         
         try:
             player.playlist.remove_nth(position)
+            return Response("Song removed from playlist!", delete_after=30)
         except Exception as e:
-            await self.send_message(channel, str(e))
-            return
+            return Response(str(e), delete_after=30)
 
     async def on_message(self, message):
         await self.wait_until_ready()
