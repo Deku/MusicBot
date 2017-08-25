@@ -266,6 +266,10 @@ class Playlist(EventEmitter):
     def count_for_user(self, user):
         return sum(1 for e in self.entries if e.meta.get('author', None) == user)
 
+    def pull(self, position):
+        self.entries.appendleft(self.entries[position - 1])
+        self.remove_nth(position + 1)
+
     def remove_nth(self, position):
         self.entries.rotate(-position)
         self.entries.popleft()

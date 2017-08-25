@@ -1812,6 +1812,30 @@ class MusicBot(discord.Client):
         await self.disconnect_all_voice_clients()
         raise exceptions.TerminateSignal
 
+    async def cmd_pull(self, player, channel, leftover_args):
+        """
+        Usage:
+            {command_prefix}pull position
+
+        Pulls to the start of the playlist the song at the given position.
+        """
+        try:
+            position = int(leftover_args[0])
+        except Exception as e:
+            raise exceptions.CommandError("Position parameter must be a number!", expire_in=20)
+
+        if len(player.playlist.entries) == 0:
+            raise exceptions.CommandError("The playlist is empty!", expire_in=20)
+
+        if len(player.playlist.entries) < position:
+            raise exceptions.CommandError("The position given is greater than the number of songs in the playlist!", expire_in=20)
+        
+        try:
+            player.playlist.pull(position)
+            return Response("The song is ready to play next!", delete_after=30)
+        except Exception as e:
+            return Response(str(e), delete_after=30)
+        
     async def cmd_remove(self, player, channel, leftover_args):
         """
         Usage:
